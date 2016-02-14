@@ -1,15 +1,13 @@
-#!/Users/eitanshaulson/.virtualenvs/filetypes/bin/python
+#!/Users/eitanshaulson/.virtualenvs/mail_tracker/bin/python
 import json
 import urllib2
 import glob
 import os
 import sys
-import slack
-import slack.chat
 import logging
 from datetime import datetime
+from pyslack import SlackClient
 from bs4 import BeautifulSoup
-
 
 
 logging.captureWarnings(True)
@@ -110,8 +108,7 @@ def talk_to_slack():
     client = None
     if os.path.exists(token_dir):
         with open(token_dir, 'r') as fp:
-            slack.api_token = fp.readlines()[0].strip()
-            client = slack.api_token
+            client = SlackClient(fp.readlines()[0].strip())
     for filen in files:
         with open(filen, 'r') as fp:
             lines = fp.readlines()
@@ -129,7 +126,7 @@ def talk_to_slack():
     with open(LOG_FILE_DIR , 'a+') as fp:
         fp.write(last_data + '\n')
     if client is not None:
-        slack.chat.post_message('#mail-tracker-notif', last_data, username='slackbot')
+        client.chat_post_message('#mail-tracker-notif', last_data, username='slackbot')
     sys.exit(0)
 
 

@@ -7,5 +7,5 @@ setup(name='Mail_tracker',
       author='Eitan Shaulson',
       author_email='eitanshaulson@gmail.com',
       py_modules = ['Mail_Tracker'],
-      install_requires = ['BeautifulSoup4', 'datetime']
+      install_requires = ['BeautifulSoup4', 'DateTime', 'pyslack-real']
 )

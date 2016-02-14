@@ -1,0 +1,6 @@
+DateTime==4.0.1
+pyslack-real==0.6.0
+beautifulsoup4==4.4.1
+
+
+
