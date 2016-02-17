@@ -100,30 +100,13 @@ def update_item_info(file_name, item=None):
 
 
 def talk_to_slack():
-    data = []
-    ls = []
-    last_data = []
     # this function sends the same output of the files to slack
+    get_last_data()
     token_dir = os.path.expanduser('~/.packages/conf/conf.txt')
-    files = get_files()
     client = None
     if os.path.exists(token_dir):
         with open(token_dir, 'r') as fp:
             client = SlackClient(fp.readlines()[0].strip())
-    for filen in files:
-        with open(filen, 'r') as fp:
-            lines = fp.readlines()
-            if "Item name:" in lines:
-                    print "yes"
-            for line in lines:
-                line = line.rstrip()
-                if line != LINE_SEP:
-                    ls.append(line)
-                else:
-                    data.append(ls)
-                    ls = []
-            last_data.append(data[-1])
-    last_data = '\n'.join(str(line) for item in last_data for line in item)
     with open(LOG_FILE_DIR , 'a+') as fp:
         fp.write(last_data + '\n')
     if client is not None:
@@ -169,13 +152,44 @@ def delete(package):
     sys.exit(0)
 
 
+def show():
+    for file_name in get_files():
+        update_item_info(file_name)
+    get_last_data()
+    print last_data
+
+
+def get_last_data():
+    global last_data, data, ls
+    data = []
+    ls = []
+    last_data = []
+    files = get_files()
+    for filen in files:
+        with open(filen, 'r') as fp:
+            lines = fp.readlines()
+            if "Item name:" in lines:
+                    print "yes"
+            for line in lines:
+                line = line.rstrip()
+                if line != LINE_SEP:
+                    ls.append(line)
+                else:
+                    data.append(ls)
+                    ls = []
+            last_data.append(data[-1])
+    last_data = '\n'.join(str(line) for item in last_data for line in item)
+
+
 def command_tool():
     # we can add in the call to our script, if we want to add or delete files
     # using a sys.argv command
     if len(sys.argv) > 1:
-        if len(sys.argv) < 3:
-            print "usage: %s [--add|--del  package_id]" % sys.argv[0]
+        if len(sys.argv) < 3 and sys.argv[1] != '--show':
+            print "usage: %s [--add|--del|--show  package_id]" % sys.argv[0]
             sys.exit(1)
+        elif sys.argv[1] == '--show':
+            show()
         if sys.argv[1] == '--add':
             if len(sys.argv) == 3:
                 add(sys.argv[2])

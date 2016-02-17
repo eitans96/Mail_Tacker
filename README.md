@@ -34,6 +34,7 @@ Update - is when either, you click run(if you’re using a GUI, like pycharm or 
 When the program sees that is has no ‘add’, or ‘delete’ argument added, it will first start off by going to our function that gets a list of all the files from ‘packages’ folder and returns it and gives it to the logic function one by one.
 Then it goes through the logic based function to update each file according to the ID that its attached to. It writes all the new info down into 3 places: Each ID has its own file, a log file, and slack(if you have it).
 
+You also have a 4th option, which is 'show'. This will print out the location results directly to your terminal window.
 # How it updates:
 
 It goes to each file and grabs the ID from its name, which you gave it in the first place. Then it goes and opens up the file for reading and checks for the last location that was registered. If none is found, then it saves the old location as an empty string. 
