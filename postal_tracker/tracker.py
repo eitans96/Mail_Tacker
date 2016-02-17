@@ -1,4 +1,4 @@
-#!/Users/eitanshaulson/.virtualenvs/mail_tracker/bin/python
+#!/usr/bin/env python
 import json
 import urllib2
 import glob
@@ -11,6 +11,7 @@ from bs4 import BeautifulSoup
 
 
 logging.captureWarnings(True)
+
 
 
 # constants
